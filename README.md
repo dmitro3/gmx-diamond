@@ -1,1 +1,1 @@
-# gmx-diamond (stake launchpad)
+# GAMEXPAD Smart Contracts
