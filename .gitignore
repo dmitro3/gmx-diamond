@@ -8,6 +8,7 @@ node_modules
 /artifacts
 
 # TypeChain files
+/types
 /typechain
 /typechain-types
 
