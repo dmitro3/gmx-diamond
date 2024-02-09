@@ -28,7 +28,7 @@ const chainIds = {
   hardhat: 31337,
   chaos: 1351057110,
   nebula: 1482601649,
-  "nebula-testnet": 503129905,
+  "nebula-testnet": 37084624,
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
@@ -45,8 +45,7 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
       jsonRpcUrl = "https://mainnet.skalenodes.com/v1/green-giddy-denebola";
       break;
     case "nebula-testnet":
-      jsonRpcUrl =
-        "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird";
+      jsonRpcUrl = "https://testnet.skalenodes.com/v1/lanky-ill-funny-testnet";
       break;
     default:
       jsonRpcUrl = "";
