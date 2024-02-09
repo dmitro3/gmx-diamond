@@ -12,6 +12,7 @@ library LibStake{
         
         mapping(uint256 => uint256) amountMultipler;
         mapping(uint256 => uint256) timesMultipler;
+        
         mapping(address => bool) blacklist;
         mapping(address => TUser) user;
         

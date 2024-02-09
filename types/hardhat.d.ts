@@ -321,9 +321,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UintUtils__factory>;
     getContractFactory(
-      name: "GmxpadDiamond",
+      name: "Gmxpad",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GmxpadDiamond__factory>;
+    ): Promise<Contracts.Gmxpad__factory>;
     getContractFactory(
       name: "Launchpad",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -352,10 +352,6 @@ declare module "hardhat/types/runtime" {
       name: "XXToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.XXToken__factory>;
-    getContractFactory(
-      name: "DiamondABI",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.DiamondABI__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -743,10 +739,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.UintUtils>;
     getContractAt(
-      name: "GmxpadDiamond",
+      name: "Gmxpad",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.GmxpadDiamond>;
+    ): Promise<Contracts.Gmxpad>;
     getContractAt(
       name: "Launchpad",
       address: string,
@@ -782,11 +778,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.XXToken>;
-    getContractAt(
-      name: "DiamondABI",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.DiamondABI>;
 
     // default types
     getContractFactory(

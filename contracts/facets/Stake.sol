@@ -207,7 +207,6 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
             multipler = (amountMultipler * timeMultipler);
             score = (_amount / DIFFERENCE_AMOUNT) * multipler;
         }
-        return (score,multipler);
     }
 
     function _timeMultipler(
@@ -218,7 +217,7 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
         returns(uint256 multipler)
     {
         LibStake.Layout storage ss = LibStake.layout();
-        uint256[] storage times = ss.times;
+        uint256[] memory times = ss.times;
 
         for(uint256 i = 0; i < times.length;){
             uint256 currentTime = times[i];
@@ -226,14 +225,13 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
 
             if (_time >= currentTime && _time < nextTime) {
                 multipler = ss.timesMultipler[currentTime];
-                return multipler;
+                break;
             }
 
             unchecked { 
                 i++; 
             }
         }
-        return multipler;
     }
 
     function _amountMultipler(
@@ -244,49 +242,49 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
         returns(uint256 multipler) 
     {
         LibStake.Layout storage ss = LibStake.layout();
-        uint256[] storage amounts = ss.amounts;
+        uint256[] memory amounts = ss.amounts;
+
         for(uint256 i = 0; i < amounts.length;){
             uint256 currentAmount = amounts[i];
             uint256 nextAmount = (i < amounts.length - 1) ? amounts[i + 1] : type(uint256).max;
 
             if (_amount >= currentAmount && _amount < nextAmount) {
                 multipler = ss.amountMultipler[currentAmount];
-                return multipler;
+                break;
             }
 
             unchecked { 
                 i++; 
             }
         }
-        return multipler;
     }
 
     function calculateRewards(
         address _user
-    )
+    ) 
         public 
         view 
-        returns(uint256,uint256)
+        returns(uint256,uint256) 
     {
         uint256 token0Reward = 0;
         uint256 token1Reward = 0;
-
+        address user = _user;
         LibStake.Layout storage ss = LibStake.layout();
 
-        if(ss.user[_user].staker){
-            uint256 userCCIndex = ss.user[_user].userChangeCountIndex;
+        if(ss.user[user].staker){
+            uint256 userCCIndex = ss.user[user].userChangeCountIndex;
             uint256 poolCCIndex = ss.stakePoolInfo.lastCHCIndex;
             uint256 blockTime = block.timestamp;
-
+            uint256 diff = 1 ether;
             for(uint256 i = userCCIndex; i <= poolCCIndex;) {
-                uint256 userWeight = ss.user[_user].userTotalScore.mulDiv(DIFFERENCE_AMOUNT,ss.chc[i].chcTotalPoolScore);
-                uint256 reward0 = ss.chc[i].chcToken0RewardPerTime.mulDiv(userWeight,DIFFERENCE_AMOUNT);
-                uint256 reward1 = ss.chc[i].chcToken1RewardPerTime.mulDiv(userWeight,DIFFERENCE_AMOUNT);
+                uint256 userWeight = ss.user[user].userTotalScore.mulDiv(diff,ss.chc[i].chcTotalPoolScore);
+                uint256 reward0 = ss.chc[i].chcToken0RewardPerTime.mulDiv(userWeight,diff);
+                uint256 reward1 = ss.chc[i].chcToken1RewardPerTime.mulDiv(userWeight,diff);
 
                 if(ss.chc[i].canWinPrizesToken0) {
                     uint256 userActiveTimeForToken0 = 0;
 
-                    if(blockTime > ss.chc[i].chcToken0DistributionEndTime) {
+                    if(i == poolCCIndex && blockTime > ss.chc[i].chcToken0DistributionEndTime) {
                         unchecked {
                             userActiveTimeForToken0 = ss.chc[i].chcToken0DistributionEndTime - ss.chc[i].chcStartTime;
                         }
@@ -309,7 +307,7 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
                 if(ss.chc[i].canWinPrizesToken1) {
                     uint256 userActiveTimeForToken1 = 0;
 
-                    if(blockTime > ss.chc[i].chcToken1DistributionEndTime) {
+                    if(i == poolCCIndex && blockTime > ss.chc[i].chcToken1DistributionEndTime) {
                         unchecked {
                             userActiveTimeForToken1 = ss.chc[i].chcToken1DistributionEndTime - ss.chc[i].chcStartTime;
                         }
@@ -328,7 +326,7 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
                         token1Reward = token1Reward + (reward1 * userActiveTimeForToken1);
                     }
                 }
-                unchecked{
+                unchecked {
                     i++;
                 }
             }

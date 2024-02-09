@@ -30,7 +30,7 @@ contract Setting is Modifiers, ReentrancyGuard, OwnableInternal {
 
         for (uint256 i = 0; i < amounts.length;) {
             ss.amountMultipler[amounts[i]] = multipliers[i];
-            ss.amounts.push(multipliers[i]);
+            ss.amounts.push(amounts[i]);
             unchecked{
                 i++;
             }

@@ -23,11 +23,12 @@ if (!privatekey) {
 }
 
 const chainIds = {
+  mainnet: 1,
   ganache: 1337,
   hardhat: 31337,
-  skale: 1351057110,
-  mainnet: 1,
-  sepolia: 11155111,
+  chaos: 1351057110,
+  nebula: 1482601649,
+  "nebula-testnet": 503129905,
 };
 
 function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
@@ -36,12 +37,16 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
     case "mainnet":
       jsonRpcUrl = "https://1rpc.io/eth";
       break;
-    case "sepolia":
-      jsonRpcUrl = "https://sepolia.publicgoods.network";
-      break;
-    case "skale":
+    case "chaos":
       jsonRpcUrl =
         "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix";
+      break;
+    case "nebula":
+      jsonRpcUrl = "https://mainnet.skalenodes.com/v1/green-giddy-denebola";
+      break;
+    case "nebula-testnet":
+      jsonRpcUrl =
+        "https://staging-v3.skalenodes.com/v1/staging-faint-slimy-achird";
       break;
     default:
       jsonRpcUrl = "";
@@ -72,18 +77,6 @@ const config: HardhatUserConfig = {
       mainnet: process.env.ETHERSCAN_API_KEY || "",
       skale: process.env.SKALE_API_KEY || "skalenetwork",
     },
-    customChains: [
-      {
-        network: "skale",
-        chainId: 1351057110,
-        urls: {
-          apiURL:
-            "https://staging-v3.skalenodes.com/v1/staging-fast-active-bellatrix",
-          browserURL:
-            "https://staging-fast-active-bellatrix.explorer.staging-v3.skalenodes.com",
-        },
-      },
-    ],
   },
   gasReporter: {
     currency: "USD",
@@ -105,10 +98,10 @@ const config: HardhatUserConfig = {
       chainId: chainIds.ganache,
       url: "http://localhost:8545",
     },
-
     mainnet: getChainConfig("mainnet"),
-    sepolia: getChainConfig("sepolia"),
-    skale: getChainConfig("skale"),
+    chaos: getChainConfig("chaos"),
+    nebula: getChainConfig("nebula"),
+    "nebula-testnet": getChainConfig("nebula-testnet"),
   },
   paths: {
     artifacts: "./artifacts",
@@ -121,12 +114,8 @@ const config: HardhatUserConfig = {
     settings: {
       evmVersion: "paris",
       metadata: {
-        // Not including the metadata hash
-        // https://github.com/paulrberg/hardhat-template/issues/31
         bytecodeHash: "none",
       },
-      // Disable the optimizer when debugging
-      // https://hardhat.org/hardhat-network/#solidity-optimizer-support
       optimizer: {
         enabled: true,
         runs: 200,

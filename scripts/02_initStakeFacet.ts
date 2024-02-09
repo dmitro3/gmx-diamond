@@ -6,9 +6,9 @@ import XXTokenABI from "../artifacts/contracts/tokens/XXToken.sol/XXToken.json";
 async function main() {
   const [deployer] = await ethers.getSigners();
 
-  const DIAMOND_CONTRACT = "";
-  const GMX_TOKEN_CONTRACT = "";
-  const XX_TOKEN_CONTRACT = "";
+  const DIAMOND_CONTRACT = "diamond";
+  const GMX_TOKEN_CONTRACT = "token0";
+  const XX_TOKEN_CONTRACT = "token1";
 
   console.log("Diamond contract is being attach. 💁‍♂️ Please wait...");
   const gmxpadDiamondFactory = await ethers.getContractFactory("DiamondABI");
@@ -18,18 +18,20 @@ async function main() {
   console.log("");
 
   console.log("GMX token contract is being attach. 💁‍♂️ Please wait...");
-  const gmxTokenFactory = await ethers.getContractFactory("GMXTokenABI");
+  const gmxTokenFactory = await ethers.getContractFactory("GMXToken");
   const gmxTokenContract = await gmxTokenFactory.attach(GMX_TOKEN_CONTRACT);
   await gmxTokenContract.deployed();
   console.log("GMX token contract was attached successfully. 🤩👍");
   console.log("");
 
   console.log("XX token contract is being attach. 💁‍♂️ Please wait...");
-  const xxTokenFactory = await ethers.getContractFactory("XXTokenABI");
+  const xxTokenFactory = await ethers.getContractFactory("XXToken");
   const xxTokenContract = await xxTokenFactory.attach(XX_TOKEN_CONTRACT);
   await xxTokenContract.deployed();
   console.log("XX token contract was attached successfully. 🤩👍");
   console.log("");
+
+  const stakeFacet = await ethers.getContractAt("Setting", DIAMOND_CONTRACT);
 
   const Amounts = [
     ethers.utils.parseEther("40000"),
@@ -52,7 +54,7 @@ async function main() {
     ethers.utils.parseEther("1000000"),
   ];
 
-  const AmountMultipliers: number[] = [
+  const AmountMultipliers = [
     10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450,
     500,
   ];
@@ -62,31 +64,29 @@ async function main() {
     155606400,
   ];
 
-  const TimeMultiplers: number[] = [10, 15, 20, 40, 80, 120, 160, 200];
+  const TimeMultiplers = [10, 15, 20, 40, 80, 120, 160, 200];
 
-  const addAmounts = await gmxpadDiamond
+  const addAmounts = await stakeFacet
     .connect(deployer)
     .addAmounts(Amounts, AmountMultipliers);
   await addAmounts.wait();
 
-  const addTimes = await gmxpadDiamond
+  const addTimes = await stakeFacet
     .connect(deployer)
     .addTimes(Times, TimeMultiplers);
   await addTimes.wait();
 
-  const setToken0 = await gmxpadDiamond
+  const setToken0 = await stakeFacet
     .connect(deployer)
     .setToken0(gmxTokenContract.address);
   await setToken0.wait();
 
-  const setToken1 = await gmxpadDiamond
+  const setToken1 = await stakeFacet
     .connect(deployer)
     .setToken1(xxTokenContract.address);
   await setToken1.wait();
 
-  const setPoolActive = await gmxpadDiamond
-    .connect(deployer)
-    .setPoolActive(true);
+  const setPoolActive = await stakeFacet.connect(deployer).setPoolActive(true);
   await setPoolActive.wait();
 
   let contractAddresses = new Map<string, string>();
@@ -96,7 +96,9 @@ async function main() {
   contractAddresses.set("DEPLOYER", deployer.address);
   console.table(contractAddresses);
 }
-
+/**
+npx hardhat run scripts/02_initStakeFacet.ts --network chaos
+ */
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

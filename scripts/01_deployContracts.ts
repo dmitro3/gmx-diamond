@@ -7,6 +7,7 @@ async function main() {
   console.dir(FacetList);
   console.log("");
   const [deployer] = await ethers.getSigners();
+  console.log(deployer.address, await deployer.getBalance());
 
   console.log("Diamond contract is being deployed. 💁‍♂️ Please wait...");
   const gmxpadDiamondFactory = await ethers.getContractFactory("Gmxpad");
@@ -26,7 +27,10 @@ async function main() {
   const xxTokenFactory = await ethers.getContractFactory("XXToken");
   const xxTokenContract = await xxTokenFactory.deploy(deployer.address);
   await xxTokenContract.deployed();
-  console.log("XX token contract was deployed successfully. 🤩👍");
+  console.log(
+    "XX token contract was deployed successfully. 🤩👍",
+    xxTokenContract.address
+  );
   console.log("");
 
   const cut = [];
@@ -54,7 +58,9 @@ async function main() {
   contractAddresses.set("DEPLOYER => ", deployer.address);
   console.table(contractAddresses);
 }
-
+/**
+npx hardhat run scripts/01_deployContracts.ts --network chaos
+ */
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
