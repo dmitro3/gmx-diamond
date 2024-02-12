@@ -1,4 +1,4 @@
-import hre, { ethers } from "hardhat";
+import { ethers } from "hardhat";
 
 const { FacetList } = require("../libs/facets.ts");
 const { getSelectors, FacetCutAction } = require("../libs/diamond.js");
@@ -7,7 +7,10 @@ async function main() {
   console.dir(FacetList);
   console.log("");
   const [deployer] = await ethers.getSigners();
-  console.log(deployer.address, await deployer.getBalance());
+  console.log(
+    "SKALE | Nebula Gaming Hub Testnet Balance => ",
+    await deployer.getBalance()
+  );
 
   console.log("Diamond contract is being deployed. 💁‍♂️ Please wait...");
   const gmxpadDiamondFactory = await ethers.getContractFactory("Gmxpad");
@@ -17,20 +20,17 @@ async function main() {
   console.log("");
 
   console.log("GMX token contract is being deployed. 💁‍♂️ Please wait...");
-  const gmxTokenFactory = await ethers.getContractFactory("GMXToken");
-  const gmxTokenContract = await gmxTokenFactory.deploy(deployer.address);
-  await gmxTokenContract.deployed();
-  console.log("GMX token contract was deployed successfully. 🤩👍");
+  const gmxpTokenFactory = await ethers.getContractFactory("GMXPToken");
+  const gmxpTokenContract = await gmxpTokenFactory.deploy(deployer.address);
+  await gmxpTokenContract.deployed();
+  console.log("GMXP token contract was deployed successfully. 🤩👍");
   console.log("");
 
   console.log("XX token contract is being deployed. 💁‍♂️ Please wait...");
   const xxTokenFactory = await ethers.getContractFactory("XXToken");
   const xxTokenContract = await xxTokenFactory.deploy(deployer.address);
   await xxTokenContract.deployed();
-  console.log(
-    "XX token contract was deployed successfully. 🤩👍",
-    xxTokenContract.address
-  );
+  console.log("XX token contract was deployed successfully. 🤩👍");
   console.log("");
 
   const cut = [];
@@ -47,20 +47,25 @@ async function main() {
     });
   }
 
+  console.log("");
+  console.log("Writing diamond cut...");
   const addressZero = ethers.constants.AddressZero;
   const tx = await gmxpadDiamond.diamondCut(cut, addressZero, "0x");
   await tx.wait();
+  console.log("Success.");
 
   let contractAddresses = new Map<string, string>();
-  contractAddresses.set("DIAMOND => ", gmxpadDiamond.address);
-  contractAddresses.set("GMX TOKEN => ", gmxTokenContract.address);
-  contractAddresses.set("XX TOKEN => ", xxTokenContract.address);
-  contractAddresses.set("DEPLOYER => ", deployer.address);
+  contractAddresses.set("DIAMOND    => ", gmxpadDiamond.address);
+  contractAddresses.set("GMXP TOKEN => ", gmxpTokenContract.address);
+  contractAddresses.set("XX TOKEN   => ", xxTokenContract.address);
+  contractAddresses.set("DEPLOYER   => ", deployer.address);
   console.table(contractAddresses);
 }
-/**
-npx hardhat run scripts/01_deployContracts.ts --network chaos
- */
+
+/*
+npx hardhat run scripts/deploys.ts --network nebula-testnet
+*/
+
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

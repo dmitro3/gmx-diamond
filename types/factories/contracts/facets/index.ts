@@ -4,3 +4,4 @@
 export { Launchpad__factory } from "./Launchpad__factory";
 export { Setting__factory } from "./Setting__factory";
 export { Stake__factory } from "./Stake__factory";
+export { StakeQuery__factory } from "./StakeQuery__factory";

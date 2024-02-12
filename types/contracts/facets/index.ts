@@ -4,3 +4,4 @@
 export type { Launchpad } from "./Launchpad";
 export type { Setting } from "./Setting";
 export type { Stake } from "./Stake";
+export type { StakeQuery } from "./StakeQuery";

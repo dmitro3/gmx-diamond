@@ -4,7 +4,7 @@ pragma solidity 0.8.20;
 import { TChangeCountIndex,TStakeTierSection,TUser,TStakePoolInfo } from "./Structs.sol";
 
 library LibStake{
-    bytes32 internal constant STORAGE_SLOT = keccak256('storage.stake.gmxpad.io');
+    bytes32 internal constant STORAGE_SLOT = keccak256('storage.stake.gamexpad.io');
 
     struct Layout {
         uint256[] amounts;

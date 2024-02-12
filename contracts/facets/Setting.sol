@@ -88,6 +88,26 @@ contract Setting is Modifiers, ReentrancyGuard, OwnableInternal {
         LibStake.layout().stakePoolInfo.isActive = _status;
     }
 
+    function setBlacklist(
+        bool _status,
+        address _address
+    ) 
+        external 
+        onlyOwner
+    {
+        if(_address == address(0)){ revert Invalid_Address();}
+        LibStake.layout().blacklist[_address] = _status;
+    }
+
+    function setPoolStatus(
+        bool _status
+    ) 
+        external 
+        onlyOwner 
+    {
+        LibStake.layout().stakePoolInfo.isActive = _status;
+    }
+
 /// Launchpad
 
     function initLaunchpad(

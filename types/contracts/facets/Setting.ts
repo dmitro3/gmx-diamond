@@ -192,8 +192,10 @@ export interface SettingInterface extends utils.Interface {
     "addAmounts(uint256[],uint256[])": FunctionFragment;
     "addTimes(uint256[],uint256[])": FunctionFragment;
     "initLaunchpad((bool,bool,bool,bool,bool,(string,string,string,string,string,string,string,string,string,string,string,string,string[],string[]),(string,string,string,string),uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,address,address[]))": FunctionFragment;
+    "setBlacklist(bool,address)": FunctionFragment;
     "setLaunchpad((bool,bool,bool,bool,bool,(string,string,string,string,string,string,string,string,string,string,string,string,string[],string[]),(string,string,string,string),uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,address,address[]))": FunctionFragment;
     "setPoolActive(bool)": FunctionFragment;
+    "setPoolStatus(bool)": FunctionFragment;
     "setToken0(address)": FunctionFragment;
     "setToken1(address)": FunctionFragment;
     "setTokenAddress(uint256,address)": FunctionFragment;
@@ -206,8 +208,10 @@ export interface SettingInterface extends utils.Interface {
       | "addAmounts"
       | "addTimes"
       | "initLaunchpad"
+      | "setBlacklist"
       | "setLaunchpad"
       | "setPoolActive"
+      | "setPoolStatus"
       | "setToken0"
       | "setToken1"
       | "setTokenAddress"
@@ -228,11 +232,19 @@ export interface SettingInterface extends utils.Interface {
     values: [TLaunchpadStruct]
   ): string;
   encodeFunctionData(
+    functionFragment: "setBlacklist",
+    values: [PromiseOrValue<boolean>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setLaunchpad",
     values: [TLaunchpadStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "setPoolActive",
+    values: [PromiseOrValue<boolean>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPoolStatus",
     values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
@@ -263,11 +275,19 @@ export interface SettingInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setBlacklist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setLaunchpad",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "setPoolActive",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPoolStatus",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setToken0", data: BytesLike): Result;
@@ -348,12 +368,23 @@ export interface Setting extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setBlacklist(
+      _status: PromiseOrValue<boolean>,
+      _address: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setLaunchpad(
       _params: TLaunchpadStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setPoolActive(
+      _status: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPoolStatus(
       _status: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -404,12 +435,23 @@ export interface Setting extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setBlacklist(
+    _status: PromiseOrValue<boolean>,
+    _address: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setLaunchpad(
     _params: TLaunchpadStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setPoolActive(
+    _status: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPoolStatus(
     _status: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -460,12 +502,23 @@ export interface Setting extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setBlacklist(
+      _status: PromiseOrValue<boolean>,
+      _address: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setLaunchpad(
       _params: TLaunchpadStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setPoolActive(
+      _status: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPoolStatus(
       _status: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -528,12 +581,23 @@ export interface Setting extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setBlacklist(
+      _status: PromiseOrValue<boolean>,
+      _address: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setLaunchpad(
       _params: TLaunchpadStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setPoolActive(
+      _status: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPoolStatus(
       _status: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -585,12 +649,23 @@ export interface Setting extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    setBlacklist(
+      _status: PromiseOrValue<boolean>,
+      _address: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     setLaunchpad(
       _params: TLaunchpadStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setPoolActive(
+      _status: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPoolStatus(
       _status: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

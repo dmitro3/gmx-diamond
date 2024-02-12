@@ -27,120 +27,6 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
-export type TStakePoolInfoStruct = {
-  isActive: PromiseOrValue<boolean>;
-  lastCHCIndex: PromiseOrValue<BigNumberish>;
-  numberOfStakers: PromiseOrValue<BigNumberish>;
-  totalStakedToken: PromiseOrValue<BigNumberish>;
-  poolTotalScore: PromiseOrValue<BigNumberish>;
-  poolToken0RewardPerTime: PromiseOrValue<BigNumberish>;
-  poolDistributedToken0Reward: PromiseOrValue<BigNumberish>;
-  poolToken0DistributionEndTime: PromiseOrValue<BigNumberish>;
-  poolToken0Liquidity: PromiseOrValue<BigNumberish>;
-  poolToken1RewardPerTime: PromiseOrValue<BigNumberish>;
-  poolDistributedToken1Reward: PromiseOrValue<BigNumberish>;
-  poolToken1DistributionEndTime: PromiseOrValue<BigNumberish>;
-  poolToken1Liquidity: PromiseOrValue<BigNumberish>;
-  token0: PromiseOrValue<string>;
-  token1: PromiseOrValue<string>;
-};
-
-export type TStakePoolInfoStructOutput = [
-  boolean,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  string,
-  string
-] & {
-  isActive: boolean;
-  lastCHCIndex: BigNumber;
-  numberOfStakers: BigNumber;
-  totalStakedToken: BigNumber;
-  poolTotalScore: BigNumber;
-  poolToken0RewardPerTime: BigNumber;
-  poolDistributedToken0Reward: BigNumber;
-  poolToken0DistributionEndTime: BigNumber;
-  poolToken0Liquidity: BigNumber;
-  poolToken1RewardPerTime: BigNumber;
-  poolDistributedToken1Reward: BigNumber;
-  poolToken1DistributionEndTime: BigNumber;
-  poolToken1Liquidity: BigNumber;
-  token0: string;
-  token1: string;
-};
-
-export type TUserStruct = {
-  staker: PromiseOrValue<boolean>;
-  userChangeCountIndex: PromiseOrValue<BigNumberish>;
-  userTotalStakeAmount: PromiseOrValue<BigNumberish>;
-  userTotalScore: PromiseOrValue<BigNumberish>;
-  userStakeTierCount: PromiseOrValue<BigNumberish>;
-  userEarnedToken0Amount: PromiseOrValue<BigNumberish>;
-  userEarnedToken1Amount: PromiseOrValue<BigNumberish>;
-  userStakeTierSections: PromiseOrValue<BigNumberish>[];
-};
-
-export type TUserStructOutput = [
-  boolean,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber[]
-] & {
-  staker: boolean;
-  userChangeCountIndex: BigNumber;
-  userTotalStakeAmount: BigNumber;
-  userTotalScore: BigNumber;
-  userStakeTierCount: BigNumber;
-  userEarnedToken0Amount: BigNumber;
-  userEarnedToken1Amount: BigNumber;
-  userStakeTierSections: BigNumber[];
-};
-
-export type TStakeTierSectionStruct = {
-  receivable: PromiseOrValue<boolean>;
-  indexID: PromiseOrValue<BigNumberish>;
-  enterTime: PromiseOrValue<BigNumberish>;
-  exitTime: PromiseOrValue<BigNumberish>;
-  stakeAmount: PromiseOrValue<BigNumberish>;
-  userScore: PromiseOrValue<BigNumberish>;
-  endTime: PromiseOrValue<BigNumberish>;
-  tierMultipler: PromiseOrValue<BigNumberish>;
-};
-
-export type TStakeTierSectionStructOutput = [
-  boolean,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber
-] & {
-  receivable: boolean;
-  indexID: BigNumber;
-  enterTime: BigNumber;
-  exitTime: BigNumber;
-  stakeAmount: BigNumber;
-  userScore: BigNumber;
-  endTime: BigNumber;
-  tierMultipler: BigNumber;
-};
-
 export interface StakeInterface extends utils.Interface {
   functions: {
     "addToken0Liquidity(uint256)": FunctionFragment;
@@ -148,13 +34,6 @@ export interface StakeInterface extends utils.Interface {
     "calculateRewards(address)": FunctionFragment;
     "calculateScore(uint256,uint256)": FunctionFragment;
     "claimRewards()": FunctionFragment;
-    "getBlacklist(address)": FunctionFragment;
-    "getPoolInfo()": FunctionFragment;
-    "getUserInfo(address)": FunctionFragment;
-    "getUserStakeList(address)": FunctionFragment;
-    "getUserStakePeriod(uint256,address)": FunctionFragment;
-    "setBlacklist(bool,address)": FunctionFragment;
-    "setPoolStatus(bool)": FunctionFragment;
     "stake(uint256,uint256)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
     "withdrawRequest(uint256)": FunctionFragment;
@@ -167,13 +46,6 @@ export interface StakeInterface extends utils.Interface {
       | "calculateRewards"
       | "calculateScore"
       | "claimRewards"
-      | "getBlacklist"
-      | "getPoolInfo"
-      | "getUserInfo"
-      | "getUserStakeList"
-      | "getUserStakePeriod"
-      | "setBlacklist"
-      | "setPoolStatus"
       | "stake"
       | "withdraw"
       | "withdrawRequest"
@@ -198,34 +70,6 @@ export interface StakeInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "claimRewards",
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getBlacklist",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPoolInfo",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getUserInfo",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getUserStakeList",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getUserStakePeriod",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setBlacklist",
-    values: [PromiseOrValue<boolean>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setPoolStatus",
-    values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "stake",
@@ -258,34 +102,6 @@ export interface StakeInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "claimRewards",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getBlacklist",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getPoolInfo",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getUserInfo",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getUserStakeList",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getUserStakePeriod",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setBlacklist",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setPoolStatus",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
@@ -453,48 +269,6 @@ export interface Stake extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getBlacklist(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[boolean] & { isBlacklist: boolean }>;
-
-    getPoolInfo(
-      overrides?: CallOverrides
-    ): Promise<
-      [TStakePoolInfoStructOutput] & { poolInfo: TStakePoolInfoStructOutput }
-    >;
-
-    getUserInfo(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[TUserStructOutput] & { userInfo: TUserStructOutput }>;
-
-    getUserStakeList(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]] & { stakeList: BigNumber[] }>;
-
-    getUserStakePeriod(
-      _index: PromiseOrValue<BigNumberish>,
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [TStakeTierSectionStructOutput] & {
-        period: TStakeTierSectionStructOutput;
-      }
-    >;
-
-    setBlacklist(
-      _status: PromiseOrValue<boolean>,
-      _address: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setPoolStatus(
-      _status: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     stake(
       _amount: PromiseOrValue<BigNumberish>,
       _lockTime: PromiseOrValue<BigNumberish>,
@@ -539,40 +313,6 @@ export interface Stake extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getBlacklist(
-    _address: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  getPoolInfo(overrides?: CallOverrides): Promise<TStakePoolInfoStructOutput>;
-
-  getUserInfo(
-    _address: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<TUserStructOutput>;
-
-  getUserStakeList(
-    _address: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
-
-  getUserStakePeriod(
-    _index: PromiseOrValue<BigNumberish>,
-    _address: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<TStakeTierSectionStructOutput>;
-
-  setBlacklist(
-    _status: PromiseOrValue<boolean>,
-    _address: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setPoolStatus(
-    _status: PromiseOrValue<boolean>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   stake(
     _amount: PromiseOrValue<BigNumberish>,
     _lockTime: PromiseOrValue<BigNumberish>,
@@ -614,40 +354,6 @@ export interface Stake extends BaseContract {
     >;
 
     claimRewards(overrides?: CallOverrides): Promise<void>;
-
-    getBlacklist(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    getPoolInfo(overrides?: CallOverrides): Promise<TStakePoolInfoStructOutput>;
-
-    getUserInfo(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<TUserStructOutput>;
-
-    getUserStakeList(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
-    getUserStakePeriod(
-      _index: PromiseOrValue<BigNumberish>,
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<TStakeTierSectionStructOutput>;
-
-    setBlacklist(
-      _status: PromiseOrValue<boolean>,
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setPoolStatus(
-      _status: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     stake(
       _amount: PromiseOrValue<BigNumberish>,
@@ -769,40 +475,6 @@ export interface Stake extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getBlacklist(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getPoolInfo(overrides?: CallOverrides): Promise<BigNumber>;
-
-    getUserInfo(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getUserStakeList(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getUserStakePeriod(
-      _index: PromiseOrValue<BigNumberish>,
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    setBlacklist(
-      _status: PromiseOrValue<boolean>,
-      _address: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setPoolStatus(
-      _status: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     stake(
       _amount: PromiseOrValue<BigNumberish>,
       _lockTime: PromiseOrValue<BigNumberish>,
@@ -843,40 +515,6 @@ export interface Stake extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     claimRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getBlacklist(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getPoolInfo(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    getUserInfo(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getUserStakeList(
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getUserStakePeriod(
-      _index: PromiseOrValue<BigNumberish>,
-      _address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    setBlacklist(
-      _status: PromiseOrValue<boolean>,
-      _address: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setPoolStatus(
-      _status: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

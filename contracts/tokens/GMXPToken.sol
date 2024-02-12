@@ -6,14 +6,14 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
-contract GMXToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
+contract GMXPToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
     
     constructor(
         address _owner
     )
-        ERC20("GMXToken", "GMX")
+        ERC20("GMXPToken", "GMXP")
         Ownable(_owner)
-        ERC20Permit("GMXToken")
+        ERC20Permit("GMXPToken")
     {
         _mint(_owner, 1_000_000_000 * (10 ** decimals()));
     }

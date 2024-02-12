@@ -337,6 +337,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Stake__factory>;
     getContractFactory(
+      name: "StakeQuery",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StakeQuery__factory>;
+    getContractFactory(
       name: "Vesting",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Vesting__factory>;
@@ -345,13 +349,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20Permit__factory>;
     getContractFactory(
-      name: "GMXToken",
+      name: "GMXPToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GMXToken__factory>;
+    ): Promise<Contracts.GMXPToken__factory>;
     getContractFactory(
       name: "XXToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.XXToken__factory>;
+    getContractFactory(
+      name: "DiamondABI",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DiamondABI__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -759,6 +767,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Stake>;
     getContractAt(
+      name: "StakeQuery",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StakeQuery>;
+    getContractAt(
       name: "Vesting",
       address: string,
       signer?: ethers.Signer
@@ -769,15 +782,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20Permit>;
     getContractAt(
-      name: "GMXToken",
+      name: "GMXPToken",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.GMXToken>;
+    ): Promise<Contracts.GMXPToken>;
     getContractAt(
       name: "XXToken",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.XXToken>;
+    getContractAt(
+      name: "DiamondABI",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DiamondABI>;
 
     // default types
     getContractFactory(

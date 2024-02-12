@@ -13,11 +13,6 @@ import "../libraries/Errors.sol";
 contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
     using Math for uint256;
 
-    /**
-     * will be added =>
-     * forced unstake (owner)
-     * init stake pool
-     */
     uint256 constant MINUTE_IN_SECONDS       = 60;
     uint256 constant FIFTEEN_MINUTES         = 900;
     uint256 constant HOUR_IN_SECONDS         = 3600;
@@ -167,7 +162,6 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
         if(!ss.user[user].staker){revert Invalid_Action();}
         if(ss.userTierSection[user][_index].receivable){revert User_Already_requested();}
         if(ss.userTierSection[user][_index].endTime >= block.timestamp){revert User_Not_Expired();}
-        
         ss.userTierSection[user][_index].exitTime   = block.timestamp + FIFTEEN_DAYS_IN_SECONDS;
         ss.userTierSection[user][_index].receivable = true;
 
@@ -176,10 +170,10 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
             ss.stakePoolInfo.poolTotalScore -= ss.userTierSection[user][_index].userScore;
             ss.user[user].userTotalScore -= ss.userTierSection[user][_index].userScore;
         }
-        
-        _updateChc(user);
 
         _safeClaim(user);
+
+        _updateChc(user); 
 
         if(ss.user[user].userTotalScore == 0){
             ss.user[user].staker = false;
@@ -486,76 +480,6 @@ contract Stake is Modifiers, ReentrancyGuard, OwnableInternal{
         token1.transferFrom(msg.sender,address(this),_amount);
         
         emit HANDLE_ADD_LIQUIDITY(msg.sender,ss.stakePoolInfo.token1,block.timestamp);
-    }
-
-    function setBlacklist(
-        bool _status,
-        address _address
-    ) 
-        external 
-        onlyOwner
-    {
-        if(_address == address(0)){ revert Invalid_Address();}
-        LibStake.layout().blacklist[_address] = _status;
-    }
-
-    function setPoolStatus(
-        bool _status
-    ) 
-        external 
-        onlyOwner 
-    {
-        LibStake.layout().stakePoolInfo.isActive = _status;
-    }
-
-    function getBlacklist(
-        address _address
-    )
-        public
-        view 
-        returns(bool isBlacklist)
-    {
-        isBlacklist = LibStake.layout().blacklist[_address];
-    }
-
-    function getPoolInfo(
-    )
-        public 
-        view 
-        returns (TStakePoolInfo memory poolInfo)
-    {
-        poolInfo = LibStake.layout().stakePoolInfo;
-    }
-
-    function getUserInfo(
-        address _address
-    )
-        public
-        view
-        returns (TUser memory userInfo)
-    {
-        userInfo = LibStake.layout().user[_address];
-    }
-
-    function getUserStakeList(
-        address _address
-    )
-        public 
-        view 
-        returns (uint256[] memory stakeList) 
-    {
-        stakeList = LibStake.layout().user[_address].userStakeTierSections;
-    }
-
-    function getUserStakePeriod(
-        uint256 _index,
-        address _address
-    )
-        public 
-        view 
-        returns (TStakeTierSection memory period)
-    {
-        period = LibStake.layout().userTierSection[_address][_index];
     }
 
 }

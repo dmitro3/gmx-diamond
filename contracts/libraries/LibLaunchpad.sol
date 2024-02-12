@@ -4,7 +4,7 @@ pragma solidity 0.8.20;
 import { TLaunchpad ,TLaunchpadUser } from "./Structs.sol";
 
 library LibLaunchpad{
-    bytes32 internal constant STORAGE_SLOT = keccak256('storage.launchpad.gmxpad.io');
+    bytes32 internal constant STORAGE_SLOT = keccak256('storage.launchpad.gamexpad.io');
     uint256 constant DIFFERENCE_AMOUNT = 1 ether;
     
     struct Layout {
